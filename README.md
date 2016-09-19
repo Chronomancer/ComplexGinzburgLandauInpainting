@@ -1,6 +1,8 @@
 Simple Implementation of Digital Image Inpainting with Complex Ginzburg-Landau Equation in Matlab
 
-CGL(Img0, mask0, TIME, dt, eps)
+function ImgOut = CGL(Img0, mask0, TIME, dt, eps, h)
+
+Inputs:
 
 Img0 - gray scale input image with damages
 
@@ -11,3 +13,7 @@ TIME - maximum number of iterations
 dt - time step for iterative solution
 
 eps - epislon, less than 1, I used 0.2 ~ 0.5
+
+Output:
+
+ImgOut - Output image
