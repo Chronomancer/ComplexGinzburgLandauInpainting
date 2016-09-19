@@ -1,4 +1,4 @@
-function Img = CGL(Img0, mask0, TIME, dt, eps)
+function ImgOut = CGL(Img0, mask0, TIME, dt, eps)
 
 lambda=0.028; 
 maskwidth = 2;
@@ -7,19 +7,19 @@ root2 = sqrt(2);
 
 [N M]=size(Img0);
 
-Img=double(Img0);
+ImgOut=double(Img0);
 ImgLaplacian=zeros(N,M);
 
 
-Imax = max(max(Img));
-Img = Img*(2/Imax)-1; %scale to [-1 1]
+Imax = max(max(ImgOut));
+ImgOut = ImgOut*(2/Imax)-1; %scale to [-1 1]
 
-ImgReal = Img;
+ImgReal = ImgOut;
 ImgImaginary = sqrt(1 - ImgReal.^2);
 ImgComplex = complex(ImgReal,ImgImaginary);
-Img = ImgComplex;
+ImgOut = ImgComplex;
 
-ImgNew = Img;
+ImgNew = ImgOut;
 
 maskindexCount = 0;
 maskindexX = zeros(1,N*M);
@@ -47,33 +47,32 @@ end;end;end;
 
 % begin iteration
 for t=1:TIME,
-	Img = ImgNew;	
+	ImgOut = ImgNew;	
 
 	% iterations
 	for k = 1:maskindexCount,
 		j = maskindexY(k);
-		Img = maskindexX(k);
+		ImgOut = maskindexX(k);
 		
-		laplacianI = Img(j,Img-1)+ Img(j,Img+1)+ Img(j-1,Img)+ Img(j+1,Img)- (4+4/root2)*Img(j,Img);
-		laplacianI = laplacianI+ Img(j+1,Img+1)/root2+ Img(j-1,Img-1)/root2+ Img(j+1,Img-1)/root2+ Img(j-1,Img+1)/root2;
-		Isquare = real(Img(j,Img))^2+imag(Img(j,Img))^2;
+		laplacianI = ImgOut(j,ImgOut-1)+ ImgOut(j,ImgOut+1)+ ImgOut(j-1,ImgOut)+ ImgOut(j+1,ImgOut)- (4+4/root2)*ImgOut(j,ImgOut);
+		laplacianI = laplacianI+ ImgOut(j+1,ImgOut+1)/root2+ ImgOut(j-1,ImgOut-1)/root2+ ImgOut(j+1,ImgOut-1)/root2+ ImgOut(j-1,ImgOut+1)/root2;
+		Isquare = real(ImgOut(j,ImgOut))^2+imag(ImgOut(j,ImgOut))^2;
 		
-		ImgNew(j,Img) = Img(j,Img) + dt*(laplacianI) + (1-Isquare)*Img(j,Img)* dt/eps^2;
+		ImgNew(j,ImgOut) = ImgOut(j,ImgOut) + dt*(laplacianI) + (1-Isquare)*ImgOut(j,ImgOut)* dt/eps^2;
 	end;	
 
-	diffsum = max(max(abs(ImgNew-Img)));	
+	diffsum = max(max(abs(ImgNew-ImgOut)));	
 	
 	if diffsum < 10^-5
 		fprintf('\rt=%d\n',t);
 		t=TIME; 
 		
-		Img = real(ImgNew);
-		Img = (Img+1)*(Imax/2);
+		ImgOut = real(ImgNew);
+		ImgOut = (ImgOut+1)*(Imax/2);
 		return; 
 	end;	
 
 end;
 
-Img = real(ImgNew);
-Img = (Img+1)*(Imax/2);
-
+ImgOut = real(ImgNew);
+ImgOut = (ImgOut+1)*(Imax/2);
