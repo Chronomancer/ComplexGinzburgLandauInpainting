@@ -1,5 +1,6 @@
 Simple Implementation of Digital Image Inpainting with Complex Ginzburg-Landau Equation in Matlab
 
+
 function ImgOut = CGL(Img0, mask0, TIME, dt, eps, h)
 
 Inputs:
