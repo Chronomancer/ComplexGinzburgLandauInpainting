@@ -1,4 +1,4 @@
-function Img = CGL(Img0, mask0, TIME, dt, eps, h)
+function Img = CGL(Img0, mask0, TIME, dt, eps)
 
 lambda=0.028; 
 maskwidth = 2;
